@@ -49,21 +49,21 @@ public class Main {
 class TextReader extends ChainableSuplierBase<String> {
     public void read() {
         String line = "header:inputbody"; // なんか文字列をファイルから読みこんだりする
-        this.dest.forEach(destQueue -> destQueue.offer(line))
+        this.offer(line);
     }
 }
 
 class HeaderParser extends ChainableFunctionBase<String, TextHeader> {
     public void parse() {
         String line = this.src.poll();
-        this.dest.forEach(destQueue -> destQueue.offer(new TextHeader(line.split(":")[0])));
+        this.offer(() -> new TextHeader(line.split(":")[0]));
     }
 }
 
 class BodyParser extends ChainableFunctionBase<String, TextBody> {
     public void parse() {
         String line = this.src.poll();
-        this.dest.forEach(destQueue -> destQueue.offer(new TextBody(line.split(":")[1])));
+        this.offer(() -> new TextBody(line.split(":")[1]));
     }
 }
 
