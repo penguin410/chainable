@@ -9,8 +9,12 @@ public class Main {
         TextView view = new TextView();
 
         // データフロー定義
-        Chain chain_single = reader.to(headerParser, bodyParser).chain();
-        Chain chain_multiple = headerParser.toWithAnotherFrom(bodyParser, view).chain();
+        Chain chain_single = reader.to(headerParser, bodyParser);
+        Chain chain_multiple = headerParser.toWithAnotherFrom(bodyParser, view);
+        
+        // BlockingQueueで連結
+        chain_single.chain();
+        chain_multiple.chain();
 
         // 各Chainableを独立に動かす
         Arrays.asList(
